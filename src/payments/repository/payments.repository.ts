@@ -8,6 +8,7 @@ import { CreatePaymentDto } from '../dto/request';
 import { Payment } from '../entity/payment.entity';
 
 import { IPaymentsRepository } from './interfaces/payments.repository.interface';
+import { EntityNotFoundException } from 'src/common/exceptions/custom';
 
 export class PaymentsRepository implements IPaymentsRepository {
   private paymentsRepository: Repository<Payment>;
@@ -29,9 +30,18 @@ export class PaymentsRepository implements IPaymentsRepository {
     return this.paymentsRepository.find();
   }
 
-  findOne(id: string): Promise<Payment> {
-    throw new Error('Method not implemented.');
+  async findOne(paymentId: string): Promise<Payment> {
+    const payment = await this.paymentsRepository.findOne({
+      where: { paymentId },
+    });
+
+    if (!payment) {
+      throw new EntityNotFoundException('payment');
+    }
+
+    return payment;
   }
+
   create(request: Partial<Payment>): Payment {
     throw new Error('Method not implemented.');
   }
