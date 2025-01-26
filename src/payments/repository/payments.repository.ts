@@ -47,8 +47,9 @@ export class PaymentsRepository implements IPaymentsRepository {
   }
 
   save(request: CreatePaymentDto): Promise<Payment> {
-    throw new Error('Method not implemented.');
+    return this.paymentsRepository.save(request);
   }
+
   update(
     conditions: FindOptionsWhere<Payment>,
     request: Partial<Payment>,
