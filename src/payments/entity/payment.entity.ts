@@ -19,5 +19,5 @@ export class Payment extends BaseEntity {
   total: number;
 
   //TODO: Definir la relación 1:1 con tickets
-  ticket_id: string;
+  ticketId: string;
 }
