@@ -18,8 +18,13 @@ export class PaymentsRepository implements IPaymentsRepository {
   ) {}
 
   setQueryRunner(queryRunner: QueryRunner): void {
-    throw new Error('Method not implemented.');
+    if (queryRunner) {
+      this.paymentsRepository = queryRunner.manager.getRepository(Payment);
+    } else {
+      this.paymentsRepository = this.defaultRepository;
+    }
   }
+
   findAll(): Promise<Payment[]> {
     throw new Error('Method not implemented.');
   }
