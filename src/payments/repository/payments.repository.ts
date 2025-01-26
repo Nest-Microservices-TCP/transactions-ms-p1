@@ -43,8 +43,9 @@ export class PaymentsRepository implements IPaymentsRepository {
   }
 
   create(request: Partial<Payment>): Payment {
-    throw new Error('Method not implemented.');
+    return this.paymentsRepository.create(request);
   }
+
   save(request: CreatePaymentDto): Promise<Payment> {
     throw new Error('Method not implemented.');
   }
