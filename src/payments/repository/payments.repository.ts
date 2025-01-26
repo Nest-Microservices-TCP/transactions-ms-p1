@@ -26,8 +26,9 @@ export class PaymentsRepository implements IPaymentsRepository {
   }
 
   findAll(): Promise<Payment[]> {
-    throw new Error('Method not implemented.');
+    return this.paymentsRepository.find();
   }
+
   findOne(id: string): Promise<Payment> {
     throw new Error('Method not implemented.');
   }
