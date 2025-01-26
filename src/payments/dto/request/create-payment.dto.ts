@@ -7,5 +7,5 @@ export class CreatePaymentDto {
   total: number;
 
   @IsUUID()
-  ticket_id: string;
+  ticketId: string;
 }
