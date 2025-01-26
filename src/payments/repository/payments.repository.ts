@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { FindOptionsWhere, QueryRunner } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOptionsWhere, QueryRunner, Repository } from 'typeorm';
 
 import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreatePaymentDto } from '../dto/request';
@@ -9,6 +10,13 @@ import { Payment } from '../entity/payment.entity';
 import { IPaymentsRepository } from './interfaces/payments.repository.interface';
 
 export class PaymentsRepository implements IPaymentsRepository {
+  private paymentsRepository: Repository<Payment>;
+
+  constructor(
+    @InjectRepository(Payment)
+    private readonly defaultRepository: Repository<Payment>,
+  ) {}
+
   setQueryRunner(queryRunner: QueryRunner): void {
     throw new Error('Method not implemented.');
   }
