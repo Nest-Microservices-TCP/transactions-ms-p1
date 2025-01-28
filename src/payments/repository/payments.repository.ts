@@ -111,8 +111,12 @@ export class PaymentsRepository implements IPaymentsRepository {
   }
 
   paginate(page: number, limit: number): Promise<[Payment[], number]> {
-    throw new Error('Method not implemented.');
+    return this.paymentsRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   }
+
   softDelete(id: string): Promise<Payment> {
     throw new Error('Method not implemented.');
   }
