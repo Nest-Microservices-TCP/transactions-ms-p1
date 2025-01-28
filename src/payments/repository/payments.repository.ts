@@ -1,8 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsWhere, QueryRunner, Repository } from 'typeorm';
+import {
+  DeleteResult,
+  FindOptionsWhere,
+  QueryRunner,
+  Repository,
+} from 'typeorm';
 
-import { EntityNotFoundException } from 'src/common/exceptions/custom';
+import {
+  EntityNotFoundException,
+  FailedRemoveException,
+} from 'src/common/exceptions/custom';
 
 import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreatePaymentDto } from '../dto/request';
@@ -62,9 +70,19 @@ export class PaymentsRepository implements IPaymentsRepository {
     return this.paymentsRepository.save(payment);
   }
 
-  remove(id: string): Promise<DeleteResultResponse> {
-    throw new Error('Method not implemented.');
+  async remove(paymentId: string): Promise<DeleteResultResponse> {
+    await this.findOne(paymentId);
+
+    const result: DeleteResult =
+      await this.paymentsRepository.delete(paymentId);
+
+    if (result?.affected === 0) {
+      throw new FailedRemoveException('payment');
+    }
+
+    return { deleted: true, affected: result.affected };
   }
+
   findByIds(ids: string[]): Promise<Payment[]> {
     throw new Error('Method not implemented.');
   }
