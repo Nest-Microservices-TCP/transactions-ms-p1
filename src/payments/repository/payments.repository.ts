@@ -92,9 +92,16 @@ export class PaymentsRepository implements IPaymentsRepository {
     });
   }
 
-  findByCriteria(criteria: FindOptionsWhere<Payment>): Promise<Payment> {
-    throw new Error('Method not implemented.');
+  async findByCriteria(criteria: FindOptionsWhere<Payment>): Promise<Payment> {
+    const payment = await this.paymentsRepository.findOne({ where: criteria });
+
+    if (!payment) {
+      throw new EntityNotFoundException('payment');
+    }
+
+    return payment;
   }
+
   findWithRelations(relations: string[]): Promise<Payment[]> {
     throw new Error('Method not implemented.');
   }
