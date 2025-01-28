@@ -51,12 +51,17 @@ export class PaymentsRepository implements IPaymentsRepository {
     return this.paymentsRepository.save(request);
   }
 
-  update(
+  async update(
     conditions: FindOptionsWhere<Payment>,
     request: Partial<Payment>,
   ): Promise<Payment> {
-    throw new Error('Method not implemented.');
+    const payment = await this.findByCriteria(conditions);
+
+    Object.assign(payment, request);
+
+    return this.paymentsRepository.save(payment);
   }
+
   remove(id: string): Promise<DeleteResultResponse> {
     throw new Error('Method not implemented.');
   }
