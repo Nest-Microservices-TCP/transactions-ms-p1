@@ -6,11 +6,13 @@ import {
   In,
   QueryRunner,
   Repository,
+  UpdateResult,
 } from 'typeorm';
 
 import {
   EntityNotFoundException,
   FailedRemoveException,
+  FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
 
 import { DeleteResultResponse } from 'src/common/dto/response';
@@ -19,6 +21,7 @@ import { CreatePaymentDto } from '../dto/request';
 import { Payment } from '../entity/payment.entity';
 
 import { IPaymentsRepository } from './interfaces/payments.repository.interface';
+import { Status } from 'src/common/enums';
 
 export class PaymentsRepository implements IPaymentsRepository {
   private paymentsRepository: Repository<Payment>;
@@ -117,9 +120,24 @@ export class PaymentsRepository implements IPaymentsRepository {
     });
   }
 
-  softDelete(id: string): Promise<Payment> {
-    throw new Error('Method not implemented.');
+  async softDelete(paymentId: string): Promise<Payment> {
+    await this.findOne(paymentId);
+
+    const result: UpdateResult = await this.paymentsRepository.update(
+      paymentId,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new FailedSoftDeleteException('payment');
+    }
+
+    return this.findOne(paymentId);
   }
+
   restore(id: string): Promise<Payment> {
     throw new Error('Method not implemented.');
   }
