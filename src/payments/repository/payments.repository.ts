@@ -12,6 +12,7 @@ import {
 import {
   EntityNotFoundException,
   FailedRemoveException,
+  FailedRestoreException,
   FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
 
@@ -135,12 +136,27 @@ export class PaymentsRepository implements IPaymentsRepository {
       throw new FailedSoftDeleteException('payment');
     }
 
-    return this.findOne(paymentId);
+    return await this.findOne(paymentId);
   }
 
-  restore(id: string): Promise<Payment> {
-    throw new Error('Method not implemented.');
+  async restore(paymentId: string): Promise<Payment> {
+    await this.findOne(paymentId);
+
+    const result: UpdateResult = await this.paymentsRepository.update(
+      paymentId,
+      {
+        status: Status.ACTIVE,
+        deletedAt: null,
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new FailedRestoreException('payment');
+    }
+
+    return await this.findOne(paymentId);
   }
+
   exists(criteria: FindOptionsWhere<Payment>): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
