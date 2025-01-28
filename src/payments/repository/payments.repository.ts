@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import {
   DeleteResult,
   FindOptionsWhere,
+  In,
   QueryRunner,
   Repository,
 } from 'typeorm';
@@ -83,9 +84,14 @@ export class PaymentsRepository implements IPaymentsRepository {
     return { deleted: true, affected: result.affected };
   }
 
-  findByIds(ids: string[]): Promise<Payment[]> {
-    throw new Error('Method not implemented.');
+  findByIds(paymentsIds: string[]): Promise<Payment[]> {
+    return this.paymentsRepository.find({
+      where: {
+        paymentId: In(paymentsIds),
+      },
+    });
   }
+
   findByCriteria(criteria: FindOptionsWhere<Payment>): Promise<Payment> {
     throw new Error('Method not implemented.');
   }
