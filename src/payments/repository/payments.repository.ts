@@ -20,9 +20,9 @@ import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreatePaymentDto } from '../dto/request';
 
 import { Payment } from '../entity/payment.entity';
+import { Status } from 'src/common/enums';
 
 import { IPaymentsRepository } from './interfaces/payments.repository.interface';
-import { Status } from 'src/common/enums';
 
 export class PaymentsRepository implements IPaymentsRepository {
   private paymentsRepository: Repository<Payment>;
@@ -157,9 +157,12 @@ export class PaymentsRepository implements IPaymentsRepository {
     return await this.findOne(paymentId);
   }
 
-  exists(criteria: FindOptionsWhere<Payment>): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  async exists(criteria: FindOptionsWhere<Payment>): Promise<boolean> {
+    const count = await this.paymentsRepository.count({ where: criteria });
+
+    return count > 0;
   }
+
   bulkSave(entities: Payment[]): Promise<Payment[]> {
     throw new Error('Method not implemented.');
   }
