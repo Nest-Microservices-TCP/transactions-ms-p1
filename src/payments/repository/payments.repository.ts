@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   DeleteResult,
@@ -172,6 +171,6 @@ export class PaymentsRepository implements IPaymentsRepository {
   }
 
   customQuery(query: string, params: any[]): Promise<any> {
-    throw new Error('Method not implemented.');
+    return this.paymentsRepository.query(query, params);
   }
 }
