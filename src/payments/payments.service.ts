@@ -30,4 +30,11 @@ export class PaymentsService {
 
     return this.plainToInstanceDto(payment);
   }
+
+  @HandleRpcExceptions()
+  async findByIds(paymentsIds: string[]): Promise<PaymentResponseDto[]> {
+    const payments = await this.paymentsRepository.findByIds(paymentsIds);
+
+    return this.plainToInstanceDto(payments);
+  }
 }
