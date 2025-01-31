@@ -4,6 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { HandleRpcExceptions } from 'src/common/decorators';
 
 import { PaymentResponseDto } from './dto/response';
+import { CreatePaymentDto } from './dto/request';
 
 import { PaymentsRepository } from './repository/payments.repository';
 
@@ -36,5 +37,12 @@ export class PaymentsService {
     const payments = await this.paymentsRepository.findByIds(paymentsIds);
 
     return this.plainToInstanceDto(payments);
+  }
+
+  @HandleRpcExceptions()
+  async save(request: CreatePaymentDto): Promise<PaymentResponseDto> {
+    const newPayment = await this.paymentsRepository.save(request);
+
+    return this.plainToInstanceDto(newPayment);
   }
 }
