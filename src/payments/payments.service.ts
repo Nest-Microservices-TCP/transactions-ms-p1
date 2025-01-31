@@ -3,8 +3,9 @@ import { plainToInstance } from 'class-transformer';
 
 import { HandleRpcExceptions } from 'src/common/decorators';
 
-import { PaymentResponseDto } from './dto/response';
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreatePaymentDto, UpdatePaymentDto } from './dto/request';
+import { PaymentResponseDto } from './dto/response';
 
 import { PaymentsRepository } from './repository/payments.repository';
 
@@ -56,5 +57,14 @@ export class PaymentsService {
     );
 
     return this.plainToInstanceDto(updatedPayment);
+  }
+
+  @HandleRpcExceptions()
+  async remove(paymentId: string): Promise<DeleteResultResponse> {
+    const deleteResult = await this.paymentsRepository.remove(paymentId);
+
+    return plainToInstance(DeleteResultResponse, deleteResult, {
+      excludeExtraneousValues: true,
+    });
   }
 }
