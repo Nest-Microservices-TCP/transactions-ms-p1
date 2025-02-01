@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 import { PaymentResponseDto } from './dto/response';
 
@@ -12,5 +12,12 @@ export class PaymentsController {
   @MessagePattern({ cmd: 'find.all.payments' })
   async findAll(): Promise<PaymentResponseDto[]> {
     return this.paymentsService.findAll();
+  }
+
+  @MessagePattern({ cmd: 'find.one.payment' })
+  async findOne(
+    @Payload('paymentId') paymentId: string,
+  ): Promise<PaymentResponseDto> {
+    return this.paymentsService.findOne(paymentId);
   }
 }
