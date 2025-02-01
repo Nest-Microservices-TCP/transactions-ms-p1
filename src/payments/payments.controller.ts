@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
+import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreatePaymentDto, UpdatePaymentDto } from './dto/request';
 import { PaymentResponseDto } from './dto/response';
 
@@ -41,5 +42,12 @@ export class PaymentsController {
     @Payload() request: UpdatePaymentDto,
   ): Promise<PaymentResponseDto> {
     return this.paymentsService.update(request);
+  }
+
+  @MessagePattern({ cmd: 'remove.payment' })
+  async remove(
+    @Payload('paymentId') paymentId: string,
+  ): Promise<DeleteResultResponse> {
+    return this.paymentsService.remove(paymentId);
   }
 }
