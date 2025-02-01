@@ -20,4 +20,11 @@ export class PaymentsController {
   ): Promise<PaymentResponseDto> {
     return this.paymentsService.findOne(paymentId);
   }
+
+  @MessagePattern({ cmd: 'find.payments.by.ids' })
+  async findByIds(
+    @Payload() paymentsIds: string[],
+  ): Promise<PaymentResponseDto[]> {
+    return this.paymentsService.findByIds(paymentsIds);
+  }
 }
