@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
+import { CreatePaymentDto } from './dto/request';
 import { PaymentResponseDto } from './dto/response';
 
 import { PaymentsService } from './payments.service';
@@ -26,5 +27,12 @@ export class PaymentsController {
     @Payload() paymentsIds: string[],
   ): Promise<PaymentResponseDto[]> {
     return this.paymentsService.findByIds(paymentsIds);
+  }
+
+  @MessagePattern({ cmd: 'save.payment' })
+  async save(
+    @Payload() request: CreatePaymentDto,
+  ): Promise<PaymentResponseDto> {
+    return this.paymentsService.save(request);
   }
 }
