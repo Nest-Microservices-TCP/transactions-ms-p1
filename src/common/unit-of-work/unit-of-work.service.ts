@@ -1,16 +1,12 @@
-import { RoomsStatesRepository } from '../../rooms-states/repository/rooms-states.repository';
 import { IUnitForWork } from './interfaces/unit-of-work.interface';
 import { DataSource, QueryRunner } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotImplementedException } from '@nestjs/common';
 
 @Injectable()
 export class UnitOfWork implements IUnitForWork {
   private queryRunner: QueryRunner;
 
-  constructor(
-    private readonly dataSource: DataSource,
-    private readonly roomsStatesRepository: RoomsStatesRepository,
-  ) {
+  constructor(private readonly dataSource: DataSource) {
     this.queryRunner = this.dataSource.createQueryRunner();
   }
 
@@ -31,7 +27,7 @@ export class UnitOfWork implements IUnitForWork {
     }
   }
 
-  getRoomsStatesRepository(): RoomsStatesRepository {
-    return this.roomsStatesRepository;
+  getRoomsStatesRepository() {
+    throw new NotImplementedException();
   }
 }
