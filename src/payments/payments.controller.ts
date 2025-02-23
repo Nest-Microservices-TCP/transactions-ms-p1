@@ -9,7 +9,7 @@ import { PaymentsService } from './payments.service';
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
-  @MessagePattern('transactions.find.all.payments')
+  @MessagePattern('payments.find.all')
   async findAll(): Promise<PaymentResponseDto[]> {
     return this.paymentsService.findAll();
   }
