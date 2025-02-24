@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
@@ -8,6 +8,25 @@ import { envs } from './config';
 async function bootstrap() {
   const logger = new Logger('Transactions-MS');
 
+  // Iniciar la comunicación TCP
+  const tcpApp = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.TCP,
+      options: {
+        host: envs.host,
+        port: envs.port,
+      },
+    },
+  );
+
+  tcpApp.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
   /**
    * Un topic en Kafka es básicamente un canal donde se publican y consumen
    * mensajes. Funciona como una especie de buzón donde los productores
@@ -16,7 +35,7 @@ async function bootstrap() {
    * Cada topic se divide en particiones, lo que permite escalabilidad y
    * distribución de mensajes entre multiples consumidores
    */
-  // Iniciar la aplicación con Kafka
+  // Iniciar la comunicación con Kafka
   const kafkaApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
@@ -34,6 +53,9 @@ async function bootstrap() {
       },
     },
   );
+
+  await tcpApp.listen();
+  logger.log(`Transactions Microservice listen on port ${envs.port}`);
 
   await kafkaApp.listen();
   logger.log(`Transactions Microservice connected to Kafka`);
