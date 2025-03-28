@@ -1,32 +1,32 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
+import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
-import { AppModule } from './app.module';
 import { envs } from './config';
+
+import { TRANSACTIONS_PAYMENTS_TYPES_PACKAGE_NAME } from './grpc/proto/transactions/payments_types.pb';
 
 async function bootstrap() {
   const logger = new Logger('Transactions-MS');
 
-  // Iniciar la comunicación TCP
-  const tcpApp = await NestFactory.createMicroservice<MicroserviceOptions>(
+  // Iniciar la comunicación gRPC
+  const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.TCP,
+      transport: Transport.GRPC,
       options: {
-        host: envs.host,
-        port: envs.port,
+        url: `${envs.host}:${envs.port}`,
+        package: [TRANSACTIONS_PAYMENTS_TYPES_PACKAGE_NAME],
+        protoPath: ['./proto/transactions/payments_types.proto'],
+        loader: {
+          keepCase: true,
+          enums: String,
+          arrays: true,
+        },
       },
     },
   );
-
-  tcpApp.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  );
-
   /**
    * Un topic en Kafka es básicamente un canal donde se publican y consumen
    * mensajes. Funciona como una especie de buzón donde los productores
@@ -54,8 +54,10 @@ async function bootstrap() {
     },
   );
 
-  await tcpApp.listen();
-  logger.log(`Transactions Microservice listen on port ${envs.port}`);
+  await grpcApp.listen();
+  logger.log(
+    `Transactions Microservice running with gRPC on ${envs.host}:${envs.port}`,
+  );
 
   await kafkaApp.listen();
   logger.log(`Transactions Microservice connected to Kafka`);
