@@ -4,6 +4,7 @@ import { QueryRunner, FindOptionsWhere, Repository } from 'typeorm';
 import { PaymentType } from '../entity/payment-type.entity';
 import { IPaymentsTypesRepository } from './interfaces/payments-types.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EntityNotFoundException } from 'src/common/exceptions/custom';
 
 export class PaymentsTypesRepository implements IPaymentsTypesRepository {
   private paymentsTypesRepository: Repository<PaymentType>;
@@ -28,9 +29,18 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
     return this.paymentsTypesRepository.find();
   }
 
-  findOne(id: string): Promise<PaymentType> {
-    throw new Error('Method not implemented.');
+  async findOne(payment_type_id: string): Promise<PaymentType> {
+    const paymentType = await this.paymentsTypesRepository.findOneBy({
+      payment_type_id,
+    });
+
+    if (!paymentType) {
+      throw new EntityNotFoundException('payment-types');
+    }
+
+    return paymentType;
   }
+
   create(request: Partial<PaymentType>): PaymentType {
     throw new Error('Method not implemented.');
   }
