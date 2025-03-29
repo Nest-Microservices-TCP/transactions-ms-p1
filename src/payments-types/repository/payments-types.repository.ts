@@ -1,10 +1,18 @@
 import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreatePaymentTypeRequest } from 'src/grpc/proto/transactions/payments_types.pb';
-import { QueryRunner, FindOptionsWhere, Repository } from 'typeorm';
+import {
+  QueryRunner,
+  FindOptionsWhere,
+  Repository,
+  DeleteResult,
+} from 'typeorm';
 import { PaymentType } from '../entity/payment-type.entity';
 import { IPaymentsTypesRepository } from './interfaces/payments-types.repository.interface';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundException } from 'src/common/exceptions/custom';
+import {
+  EntityNotFoundException,
+  FailedRemoveException,
+} from 'src/common/exceptions/custom';
 
 export class PaymentsTypesRepository implements IPaymentsTypesRepository {
   private paymentsTypesRepository: Repository<PaymentType>;
@@ -66,7 +74,16 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
     return this.paymentsTypesRepository.save(paymentType);
   }
 
-  remove(id: string): Promise<DeleteResultResponse> {
-    throw new Error('Method not implemented.');
+  async remove(payment_type_id: string): Promise<DeleteResultResponse> {
+    await this.findOne(payment_type_id);
+
+    const result: DeleteResult =
+      await this.paymentsTypesRepository.delete(payment_type_id);
+
+    if (result.affected === 0) {
+      throw new FailedRemoveException('payment-type');
+    }
+
+    return { deleted: true, affected: result.affected };
   }
 }
