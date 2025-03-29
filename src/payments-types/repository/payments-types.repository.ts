@@ -16,7 +16,12 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
   }
 
   setQueryRunner(queryRunner: QueryRunner): void {
-    throw new Error('Method not implemented.');
+    if (queryRunner) {
+      this.paymentsTypesRepository =
+        queryRunner.manager.getRepository(PaymentType);
+    } else {
+      this.paymentsTypesRepository = this.defaultRepository;
+    }
   }
 
   findAll(): Promise<PaymentType[]> {
