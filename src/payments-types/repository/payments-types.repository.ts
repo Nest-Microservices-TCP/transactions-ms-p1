@@ -49,12 +49,23 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
     return this.paymentsTypesRepository.save(request);
   }
 
-  update(
+  async update(
     conditions: FindOptionsWhere<PaymentType>,
     request: Partial<PaymentType>,
   ): Promise<PaymentType> {
-    throw new Error('Method not implemented.');
+    const paymentType = await this.paymentsTypesRepository.findOne({
+      where: conditions,
+    });
+
+    if (!paymentType) {
+      throw new EntityNotFoundException('payment-type');
+    }
+
+    Object.assign(paymentType, request);
+
+    return this.paymentsTypesRepository.save(paymentType);
   }
+
   remove(id: string): Promise<DeleteResultResponse> {
     throw new Error('Method not implemented.');
   }
