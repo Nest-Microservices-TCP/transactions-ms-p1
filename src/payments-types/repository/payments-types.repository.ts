@@ -1,13 +1,24 @@
 import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreatePaymentTypeRequest } from 'src/grpc/proto/transactions/payments_types.pb';
-import { QueryRunner, FindOptionsWhere } from 'typeorm';
+import { QueryRunner, FindOptionsWhere, Repository } from 'typeorm';
 import { PaymentType } from '../entity/payment-type.entity';
 import { IPaymentsTypesRepository } from './interfaces/payments-types.repository.interface';
+import { InjectRepository } from '@nestjs/typeorm';
 
 export class PaymentsTypesRepository implements IPaymentsTypesRepository {
+  private paymentsTypesRepository: Repository<PaymentType>;
+
+  constructor(
+    @InjectRepository(PaymentType)
+    private readonly defaultRepository: Repository<PaymentType>,
+  ) {
+    this.paymentsTypesRepository = defaultRepository;
+  }
+
   setQueryRunner(queryRunner: QueryRunner): void {
     throw new Error('Method not implemented.');
   }
+
   findAll(): Promise<PaymentType[]> {
     throw new Error('Method not implemented.');
   }
