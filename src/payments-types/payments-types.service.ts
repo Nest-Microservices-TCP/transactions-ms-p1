@@ -21,4 +21,9 @@ export class PaymentsTypesService {
   async findOne(payment_type_id: string): Promise<PaymentType> {
     return this.paymentsTypesRepository.findOne(payment_type_id);
   }
+
+  @HandleRpcExceptions()
+  async find(): Promise<PaymentType[]> {
+    return this.paymentsTypesRepository.findAll();
+  }
 }
