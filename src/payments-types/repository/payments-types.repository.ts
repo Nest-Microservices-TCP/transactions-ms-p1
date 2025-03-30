@@ -1,18 +1,20 @@
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreatePaymentTypeRequest } from 'src/grpc/proto/transactions/payments_types.pb';
 import {
-  QueryRunner,
-  FindOptionsWhere,
   Repository,
+  QueryRunner,
   DeleteResult,
+  FindOptionsWhere,
 } from 'typeorm';
-import { PaymentType } from '../entity/payment-type.entity';
-import { IPaymentsTypesRepository } from './interfaces/payments-types.repository.interface';
-import { InjectRepository } from '@nestjs/typeorm';
 import {
-  EntityNotFoundException,
   FailedRemoveException,
+  EntityNotFoundException,
 } from 'src/common/exceptions/custom';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { CreatePaymentTypeRequest } from 'src/grpc/proto/transactions/payments_types.pb';
+import { IPaymentsTypesRepository } from './interfaces/payments-types.repository.interface';
+
+import { PaymentType } from '../entity/payment-type.entity';
+import { DeleteResultResponse } from 'src/common/dto/response';
 
 export class PaymentsTypesRepository implements IPaymentsTypesRepository {
   private paymentsTypesRepository: Repository<PaymentType>;
