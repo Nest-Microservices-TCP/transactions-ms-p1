@@ -1,7 +1,10 @@
+import { Observable } from 'rxjs';
 import { Controller } from '@nestjs/common';
 
 import {
+  PaymentType,
   CreatePaymentTypeRequest,
+  FindOnePaymentTypeRequest,
   PaymentsTypesServiceController,
   PaymentsTypesServiceControllerMethods,
 } from 'src/grpc/proto/transactions/payments_types.pb';
@@ -15,5 +18,11 @@ export class PaymentsTypesController implements PaymentsTypesServiceController {
 
   save(request: CreatePaymentTypeRequest): void {
     this.paymentsTypesService.save(request);
+  }
+
+  findOne(
+    request: FindOnePaymentTypeRequest,
+  ): Promise<PaymentType> | Observable<PaymentType> | PaymentType {
+    return this.paymentsTypesService.findOne(request);
   }
 }
