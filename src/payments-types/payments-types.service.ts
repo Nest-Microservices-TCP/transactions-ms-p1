@@ -4,6 +4,7 @@ import { HandleRpcExceptions } from 'src/common/decorators';
 import {
   CreatePaymentTypeRequest,
   FindOnePaymentTypeRequest,
+  FindPaymentsTypesResponse,
 } from 'src/grpc/proto/transactions/payments_types.pb';
 
 import { PaymentsTypesRepository } from './repository/payments-types.repository';
@@ -29,7 +30,9 @@ export class PaymentsTypesService {
   }
 
   @HandleRpcExceptions()
-  async find(): Promise<PaymentType[]> {
-    return this.paymentsTypesRepository.findAll();
+  async find(): Promise<FindPaymentsTypesResponse> {
+    const payments_types = await this.paymentsTypesRepository.findAll();
+
+    return { payments_types };
   }
 }
