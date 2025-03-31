@@ -5,6 +5,7 @@ import {
   PaymentType,
   CreatePaymentTypeRequest,
   FindOnePaymentTypeRequest,
+  FindPaymentsTypesResponse,
   PaymentsTypesServiceController,
   PaymentsTypesServiceControllerMethods,
 } from 'src/grpc/proto/transactions/payments_types.pb';
@@ -24,5 +25,12 @@ export class PaymentsTypesController implements PaymentsTypesServiceController {
     request: FindOnePaymentTypeRequest,
   ): Promise<PaymentType> | Observable<PaymentType> | PaymentType {
     return this.paymentsTypesService.findOne(request);
+  }
+
+  find():
+    | Promise<FindPaymentsTypesResponse>
+    | Observable<FindPaymentsTypesResponse>
+    | FindPaymentsTypesResponse {
+    return this.paymentsTypesService.find();
   }
 }
