@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { HandleRpcExceptions } from 'src/common/decorators';
 
+import {
+  CreatePaymentTypeRequest,
+  FindOnePaymentTypeRequest,
+} from 'src/grpc/proto/transactions/payments_types.pb';
+
 import { PaymentsTypesRepository } from './repository/payments-types.repository';
-import { CreatePaymentTypeRequest } from 'src/grpc/proto/transactions/payments_types.pb';
 
 import { PaymentType } from './entity/payment-type.entity';
 
@@ -18,7 +22,9 @@ export class PaymentsTypesService {
   }
 
   @HandleRpcExceptions()
-  async findOne(payment_type_id: string): Promise<PaymentType> {
+  async findOne(request: FindOnePaymentTypeRequest): Promise<PaymentType> {
+    const { payment_type_id } = request;
+
     return this.paymentsTypesRepository.findOne(payment_type_id);
   }
 
