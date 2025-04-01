@@ -109,8 +109,9 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
   }
 
   count(criteria: FindOptionsWhere<PaymentType>): Promise<number> {
-    throw new Error('Method not implemented.');
+    return this.paymentsTypesRepository.count({ where: criteria });
   }
+
   paginate(page: number, limit: number): Promise<[PaymentType[], number]> {
     throw new Error('Method not implemented.');
   }
