@@ -1,8 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { PaymentType as IPaymentType } from 'src/grpc/proto/transactions/payments_types.pb';
+import { BaseEntity } from 'src/common/entity';
 
 @Entity({ name: 'payments_types' })
-export class PaymentType implements IPaymentType {
+export class PaymentType extends BaseEntity implements IPaymentType {
   @PrimaryGeneratedColumn('uuid', {
     primaryKeyConstraintName: 'PK_PaymentsTypes',
   })
