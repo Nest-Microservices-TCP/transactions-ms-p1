@@ -4,6 +4,7 @@ import {
   DeleteResult,
   FindOptionsWhere,
   In,
+  UpdateResult,
 } from 'typeorm';
 import {
   FailedRemoveException,
@@ -16,6 +17,7 @@ import { IPaymentsTypesRepository } from './interfaces/payments-types.repository
 
 import { PaymentType } from '../entity/payment-type.entity';
 import { DeleteResultResponse } from 'src/common/dto/response';
+import { Status } from 'src/common/enums';
 
 export class PaymentsTypesRepository implements IPaymentsTypesRepository {
   private paymentsTypesRepository: Repository<PaymentType>;
@@ -119,9 +121,24 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
     });
   }
 
-  softDelete(id: string): Promise<PaymentType> {
-    throw new Error('Method not implemented.');
+  async softDelete(payment_type_id: string): Promise<PaymentType> {
+    await this.findOne(payment_type_id);
+
+    const result: UpdateResult = await this.paymentsTypesRepository.update(
+      payment_type_id,
+      {
+        status: Status.DELETED,
+        deletedAt: new Date(),
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new EntityNotFoundException('payment-type');
+    }
+
+    return this.findOne(payment_type_id);
   }
+
   restore(id: string): Promise<PaymentType> {
     throw new Error('Method not implemented.');
   }
