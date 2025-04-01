@@ -105,8 +105,9 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
   }
 
   findWithRelations(relations: string[]): Promise<PaymentType[]> {
-    throw new Error('Method not implemented.');
+    return this.paymentsTypesRepository.find({ relations });
   }
+
   count(criteria: FindOptionsWhere<PaymentType>): Promise<number> {
     throw new Error('Method not implemented.');
   }
