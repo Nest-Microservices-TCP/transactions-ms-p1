@@ -9,6 +9,7 @@ import {
 import {
   FailedRemoveException,
   EntityNotFoundException,
+  FailedRestoreException,
 } from 'src/common/exceptions/custom';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -139,9 +140,24 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
     return this.findOne(payment_type_id);
   }
 
-  restore(id: string): Promise<PaymentType> {
-    throw new Error('Method not implemented.');
+  async restore(payment_type_id: string): Promise<PaymentType> {
+    await this.findOne(payment_type_id);
+
+    const result: UpdateResult = await this.paymentsTypesRepository.update(
+      payment_type_id,
+      {
+        status: Status.ACTIVE,
+        deletedAt: null,
+      },
+    );
+
+    if (result?.affected === 0) {
+      throw new FailedRestoreException('payment-type');
+    }
+
+    return this.findOne(payment_type_id);
   }
+
   exists(criteria: FindOptionsWhere<PaymentType>): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
