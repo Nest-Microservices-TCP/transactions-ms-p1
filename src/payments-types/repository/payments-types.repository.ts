@@ -88,4 +88,40 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
 
     return { deleted: true, affected: result.affected };
   }
+
+  findByIds(ids: string[]): Promise<PaymentType[]> {
+    throw new Error('Method not implemented.');
+  }
+  findByCriteria(
+    criteria: FindOptionsWhere<PaymentType>,
+  ): Promise<PaymentType> {
+    throw new Error('Method not implemented.');
+  }
+  findWithRelations(relations: string[]): Promise<PaymentType[]> {
+    throw new Error('Method not implemented.');
+  }
+  count(criteria: FindOptionsWhere<PaymentType>): Promise<number> {
+    throw new Error('Method not implemented.');
+  }
+  paginate(page: number, limit: number): Promise<[PaymentType[], number]> {
+    throw new Error('Method not implemented.');
+  }
+  softDelete(id: string): Promise<PaymentType> {
+    throw new Error('Method not implemented.');
+  }
+  restore(id: string): Promise<PaymentType> {
+    throw new Error('Method not implemented.');
+  }
+  exists(criteria: FindOptionsWhere<PaymentType>): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
+  bulkSave(entities: PaymentType[]): Promise<PaymentType[]> {
+    throw new Error('Method not implemented.');
+  }
+  bulkUpdate(entities: PaymentType[]): Promise<PaymentType[]> {
+    throw new Error('Method not implemented.');
+  }
+  customQuery(query: string, params: any[]): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
 }
