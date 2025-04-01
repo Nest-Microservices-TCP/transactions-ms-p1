@@ -3,6 +3,7 @@ import {
   QueryRunner,
   DeleteResult,
   FindOptionsWhere,
+  In,
 } from 'typeorm';
 import {
   FailedRemoveException,
@@ -89,9 +90,14 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
     return { deleted: true, affected: result.affected };
   }
 
-  findByIds(ids: string[]): Promise<PaymentType[]> {
-    throw new Error('Method not implemented.');
+  findByIds(payments_types_ids: string[]): Promise<PaymentType[]> {
+    return this.paymentsTypesRepository.find({
+      where: {
+        payment_type_id: In(payments_types_ids),
+      },
+    });
   }
+
   findByCriteria(
     criteria: FindOptionsWhere<PaymentType>,
   ): Promise<PaymentType> {
