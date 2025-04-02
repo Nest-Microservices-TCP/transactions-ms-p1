@@ -47,4 +47,11 @@ export class PaymentsTypesService {
 
     return { payments_types };
   }
+
+  @HandleRpcExceptions()
+  async softDelete(request: { payment_type_id: string }): Promise<PaymentType> {
+    const { payment_type_id } = request;
+
+    return this.paymentsTypesRepository.softDelete(payment_type_id);
+  }
 }
