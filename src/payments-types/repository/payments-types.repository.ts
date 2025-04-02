@@ -1,24 +1,26 @@
 import {
+  In,
   Repository,
   QueryRunner,
   DeleteResult,
-  FindOptionsWhere,
-  In,
   UpdateResult,
+  FindOptionsWhere,
 } from 'typeorm';
-import {
-  FailedRemoveException,
-  EntityNotFoundException,
-  FailedRestoreException,
-} from 'src/common/exceptions/custom';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import {
+  FailedRemoveException,
+  FailedRestoreException,
+  EntityNotFoundException,
+} from 'src/common/exceptions/custom';
+
 import { CreatePaymentTypeRequest } from 'src/grpc/proto/transactions/payments_types.pb';
+
 import { IPaymentsTypesRepository } from './interfaces/payments-types.repository.interface';
 
+import { Status } from 'src/common/enums';
 import { PaymentType } from '../entity/payment-type.entity';
 import { DeleteResultResponse } from 'src/common/dto/response';
-import { Status } from 'src/common/enums';
 
 export class PaymentsTypesRepository implements IPaymentsTypesRepository {
   private paymentsTypesRepository: Repository<PaymentType>;
