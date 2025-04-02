@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-
 import { HandleRpcExceptions } from 'src/common/decorators';
 
+import { PaymentResponseDto } from './dto/response';
 import { DeleteResultResponse } from 'src/common/dto/response';
 import { CreatePaymentDto, UpdatePaymentDto } from './dto/request';
-import { PaymentResponseDto } from './dto/response';
+
+import { Payment } from './entity/payment.entity';
 
 import { PaymentsRepository } from './repository/payments.repository';
 
@@ -66,5 +67,12 @@ export class PaymentsService {
     return plainToInstance(DeleteResultResponse, deleteResult, {
       excludeExtraneousValues: true,
     });
+  }
+
+  @HandleRpcExceptions()
+  async softDelete(request: { payment_id: string }): Promise<Payment> {
+    const { payment_id } = request;
+
+    return this.paymentsRepository.softDelete(payment_id);
   }
 }
