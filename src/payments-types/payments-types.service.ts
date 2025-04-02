@@ -35,4 +35,16 @@ export class PaymentsTypesService {
 
     return { payments_types };
   }
+
+  @HandleRpcExceptions()
+  async findByIds(request: { payments_types_ids: string[] }): Promise<{
+    payments_types: PaymentType[];
+  }> {
+    const { payments_types_ids } = request;
+
+    const payments_types =
+      await this.paymentsTypesRepository.findByIds(payments_types_ids);
+
+    return { payments_types };
+  }
 }
