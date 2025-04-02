@@ -158,9 +158,12 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
     return this.findOne(payment_type_id);
   }
 
-  exists(criteria: FindOptionsWhere<PaymentType>): Promise<boolean> {
-    throw new Error('Method not implemented.');
+  async exists(criteria: FindOptionsWhere<PaymentType>): Promise<boolean> {
+    const count = await this.paymentsTypesRepository.count({ where: criteria });
+
+    return count > 0;
   }
+
   bulkSave(entities: PaymentType[]): Promise<PaymentType[]> {
     throw new Error('Method not implemented.');
   }
