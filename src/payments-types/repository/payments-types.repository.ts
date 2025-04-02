@@ -168,9 +168,10 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
     return this.paymentsTypesRepository.save(payments_types);
   }
 
-  bulkUpdate(entities: PaymentType[]): Promise<PaymentType[]> {
-    throw new Error('Method not implemented.');
+  bulkUpdate(payments_types: PaymentType[]): Promise<PaymentType[]> {
+    return this.paymentsTypesRepository.save(payments_types);
   }
+
   customQuery(query: string, params: any[]): Promise<any> {
     throw new Error('Method not implemented.');
   }
