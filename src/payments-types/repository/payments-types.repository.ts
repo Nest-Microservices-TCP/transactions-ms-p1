@@ -173,6 +173,6 @@ export class PaymentsTypesRepository implements IPaymentsTypesRepository {
   }
 
   customQuery(query: string, params: any[]): Promise<any> {
-    throw new Error('Method not implemented.');
+    return this.paymentsTypesRepository.query(query, params);
   }
 }
