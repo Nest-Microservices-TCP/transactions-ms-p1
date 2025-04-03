@@ -27,28 +27,19 @@ async function bootstrap() {
       },
     },
   );
-  /**
-   * Un topic en Kafka es básicamente un canal donde se publican y consumen
-   * mensajes. Funciona como una especie de buzón donde los productores
-   * envían mensajes y los consumidores los leen.
-   *
-   * Cada topic se divide en particiones, lo que permite escalabilidad y
-   * distribución de mensajes entre multiples consumidores
-   */
-  // Iniciar la comunicación con Kafka
-  const kafkaApp = await NestFactory.createMicroservice<MicroserviceOptions>(
+
+  // Iniciar la comunicación con RabbitMQ
+  const rmqApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.KAFKA,
+      transport: Transport.RMQ,
       options: {
-        client: {
-          clientId: envs.kafkaClientId,
-          brokers: [envs.kafkaBroker],
-          // logLevel: 5,
-        },
-        consumer: {
-          groupId: envs.kafkaGroupId,
-          allowAutoTopicCreation: true,
+        urls: [
+          `amqp://${envs.rabbitMqUser}:${envs.rabbitMqPassword}@${envs.rabbitMqHost}:${envs.rabbitMqPort}`,
+        ],
+        queue: 'transactions-events-queue',
+        queueOptions: {
+          durable: true,
         },
       },
     },
@@ -59,7 +50,9 @@ async function bootstrap() {
     `Transactions Microservice running with gRPC on ${envs.host}:${envs.port}`,
   );
 
-  await kafkaApp.listen();
-  logger.log(`Transactions Microservice connected to Kafka`);
+  await rmqApp.listen();
+  logger.log(
+    `Transactions Microservice connected to RabbitMQ on ${envs.rabbitMqHost}:${envs.rabbitMqPort}`,
+  );
 }
 bootstrap();
