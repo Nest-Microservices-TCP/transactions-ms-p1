@@ -5,15 +5,16 @@ interface EnvVars {
   PORT: number;
   HOST: string;
 
-  KAFKA_BROKER: string;
-  KAFKA_CLIENT_ID: string;
-  KAFKA_GROUP_ID: string;
-
   DB_HOST: string;
   DB_PORT: number;
   DB_USERNAME: string;
   DB_PASSWORD: string;
   DB_NAME: string;
+
+  RABBITMQ_HOST: string;
+  RABBITMQ_PORT: number;
+  RABBITMQ_USER: string;
+  RABBITMQ_PASSWORD: string;
 }
 
 const envSchema = joi
@@ -27,9 +28,10 @@ const envSchema = joi
     DB_PASSWORD: joi.string().required(),
     DB_NAME: joi.string().required(),
 
-    KAFKA_BROKER: joi.string().required(),
-    KAFKA_CLIENT_ID: joi.string().required(),
-    KAFKA_GROUP_ID: joi.string().required(),
+    RABBITMQ_HOST: joi.string().required(),
+    RABBITMQ_PORT: joi.number().required(),
+    RABBITMQ_USER: joi.string().required(),
+    RABBITMQ_PASSWORD: joi.string().required(),
   })
   .unknown(true);
 
@@ -51,7 +53,8 @@ export const envs = {
   dbUsername: envVars.DB_USERNAME,
   dbName: envVars.DB_NAME,
 
-  kafkaBroker: envVars.KAFKA_BROKER,
-  kafkaClientId: envVars.KAFKA_CLIENT_ID,
-  kafkaGroupId: envVars.KAFKA_GROUP_ID,
+  rabbitMqHost: envVars.RABBITMQ_HOST,
+  rabbitMqPort: envVars.RABBITMQ_PORT,
+  rabbitMqUser: envVars.RABBITMQ_USER,
+  rabbitMqPassword: envVars.RABBITMQ_PASSWORD,
 };
