@@ -1,5 +1,5 @@
 $repoUrl = "https://github.com/Nest-Microservices-TCP/proto-files-p1.git" # URL del repositorio centralizado
-$protoDirectory = "./proto"  # Directorio donde se guardarán los archivos .proto
+$protoDirectory = "./proto-files"  # Directorio donde se guardarán los archivos .proto
 
 # Clonamos el repositorio centralizado si no existe ya
 if (!(Test-Path $protoDirectory)) {
