@@ -48,6 +48,7 @@ lerna-debug.log*
 
 # proto types generated
 src/grpc/**/*.pb.ts
+proto-files/
 proto/
 
 # Runtime data
