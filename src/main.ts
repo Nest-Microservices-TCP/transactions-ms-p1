@@ -37,7 +37,7 @@ async function bootstrap() {
         urls: [
           `amqp://${envs.rabbitMqUser}:${envs.rabbitMqPassword}@${envs.rabbitMqHost}:${envs.rabbitMqPort}`,
         ],
-        queue: 'transactions-events-queue',
+        queue: envs.rmwTransactionsQueue,
         queueOptions: {
           durable: true,
         },
