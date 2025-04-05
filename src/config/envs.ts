@@ -15,6 +15,8 @@ interface EnvVars {
   RABBITMQ_PORT: number;
   RABBITMQ_USER: string;
   RABBITMQ_PASSWORD: string;
+
+  RMQ_TRANSACTIONS_QUEUE: string;
 }
 
 const envSchema = joi
@@ -32,6 +34,8 @@ const envSchema = joi
     RABBITMQ_PORT: joi.number().required(),
     RABBITMQ_USER: joi.string().required(),
     RABBITMQ_PASSWORD: joi.string().required(),
+
+    RMQ_TRANSACTIONS_QUEUE: joi.string().required(),
   })
   .unknown(true);
 
@@ -57,4 +61,6 @@ export const envs = {
   rabbitMqPort: envVars.RABBITMQ_PORT,
   rabbitMqUser: envVars.RABBITMQ_USER,
   rabbitMqPassword: envVars.RABBITMQ_PASSWORD,
+
+  rmwTransactionsQueue: envVars.RMQ_TRANSACTIONS_QUEUE,
 };
