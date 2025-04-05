@@ -5,7 +5,7 @@ import {
   CreatePaymentTypeRequest,
   FindOnePaymentTypeRequest,
   FindPaymentsTypesResponse,
-} from 'src/grpc/proto/transactions/payments_types.pb';
+} from 'src/grpc/proto-files/transactions/payments_types.pb';
 
 import { PaymentsTypesRepository } from './repository/payments-types.repository';
 

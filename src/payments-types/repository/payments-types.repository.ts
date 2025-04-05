@@ -14,7 +14,7 @@ import {
   EntityNotFoundException,
 } from 'src/common/exceptions/custom';
 
-import { CreatePaymentTypeRequest } from 'src/grpc/proto/transactions/payments_types.pb';
+import { CreatePaymentTypeRequest } from 'src/grpc/proto-files/transactions/payments_types.pb';
 
 import { IPaymentsTypesRepository } from './interfaces/payments-types.repository.interface';
 
