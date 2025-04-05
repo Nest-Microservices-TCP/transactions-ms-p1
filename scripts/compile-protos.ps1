@@ -16,4 +16,4 @@ protoc --plugin=protoc-gen-ts_proto=".\\node_modules\\.bin\\protoc-gen-ts_proto.
     --ts_proto_opt=useDate=true `
     --ts_proto_opt=addGrpcMetadata=true `
     --ts_proto_opt=unrecognizedEnum=false `
-    $(find proto -name "*.proto")
+    $(find proto-files -name "*.proto")
