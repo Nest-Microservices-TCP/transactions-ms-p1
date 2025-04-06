@@ -18,7 +18,7 @@ async function bootstrap() {
       options: {
         url: `${envs.host}:${envs.port}`,
         package: [TRANSACTIONS_PAYMENTS_TYPES_PACKAGE_NAME],
-        protoPath: ['./proto/transactions/payments_types.proto'],
+        protoPath: ['./proto-files/transactions/payments_types.proto'],
         loader: {
           keepCase: true,
           enums: String,
