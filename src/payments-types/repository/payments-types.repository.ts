@@ -14,12 +14,13 @@ import {
   EntityNotFoundException,
 } from 'src/common/exceptions/custom';
 
-import { CreatePaymentTypeRequest } from 'src/grpc/proto-files/transactions/payments_types.pb';
+import { CreatePaymentTypeRequest } from 'src/grpc/transactions/payments_types.pb';
 
 import { IPaymentsTypesRepository } from './interfaces/payments-types.repository.interface';
 
 import { Status } from 'src/common/enums';
 import { PaymentType } from '../entity/payment-type.entity';
+
 import { DeleteResultResponse } from 'src/common/dto/response';
 
 export class PaymentsTypesRepository implements IPaymentsTypesRepository {

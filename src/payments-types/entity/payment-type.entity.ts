@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { PaymentType as IPaymentType } from 'src/grpc/proto-files/transactions/payments_types.pb';
+import { PaymentType as IPaymentType } from 'src/grpc/transactions/payments_types.pb';
 import { BaseEntity } from 'src/common/entity';
 
 @Entity({ name: 'payments_types' })
