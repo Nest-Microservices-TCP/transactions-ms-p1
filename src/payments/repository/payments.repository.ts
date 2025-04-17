@@ -1,27 +1,27 @@
-import { InjectRepository } from '@nestjs/typeorm';
 import {
+  In,
+  Repository,
+  QueryRunner,
+  UpdateResult,
   DeleteResult,
   FindOptionsWhere,
-  In,
-  QueryRunner,
-  Repository,
-  UpdateResult,
 } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import {
-  EntityNotFoundException,
   FailedRemoveException,
   FailedRestoreException,
+  EntityNotFoundException,
   FailedSoftDeleteException,
 } from 'src/common/exceptions/custom';
 
-import { DeleteResultResponse } from 'src/common/dto/response';
-import { CreatePaymentDto } from '../dto/request';
-
-import { Payment } from '../entity/payment.entity';
-import { Status } from 'src/common/enums';
-
 import { IPaymentsRepository } from './interfaces/payments.repository.interface';
+
+import { CreatePaymentDto } from '../dto/request';
+import { DeleteResultResponse } from 'src/common/dto/response';
+
+import { Status } from 'src/common/enums';
+import { Payment } from '../entity/payment.entity';
 
 export class PaymentsRepository implements IPaymentsRepository {
   private paymentsRepository: Repository<Payment>;
