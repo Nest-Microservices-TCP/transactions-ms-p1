@@ -5,7 +5,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import { envs } from './config';
 
-import { TRANSACTIONS_PAYMENTS_TYPES_PACKAGE_NAME } from './grpc/proto-files/transactions/payments_types.pb';
+import { TRANSACTIONS_PAYMENTS_TYPES_PACKAGE_NAME } from './grpc/transactions/payments_types.pb';
 
 async function bootstrap() {
   const logger = new Logger('Transactions-MS');
