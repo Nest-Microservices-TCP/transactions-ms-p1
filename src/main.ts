@@ -3,6 +3,11 @@ import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
+import {
+  HttpExceptionsFilter,
+  TypeORMExceptionsFilter,
+} from './common/exceptions/filters';
+
 import { envs } from './config';
 
 import { TRANSACTIONS_PAYMENTS_TYPES_PACKAGE_NAME } from './grpc/transactions/payments_types.pb';
@@ -26,6 +31,11 @@ async function bootstrap() {
         },
       },
     },
+  );
+
+  grpcApp.useGlobalFilters(
+    new HttpExceptionsFilter(),
+    new TypeORMExceptionsFilter(),
   );
 
   // Iniciar la comunicación con RabbitMQ
